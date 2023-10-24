@@ -6,15 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.projection.MediaProjectionManager;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
-import com.hbisoft.hbrecorder.HBRecorder;
-import com.hbisoft.hbrecorder.HBRecorderCodecInfo;
-import com.hbisoft.hbrecorder.HBRecorderListener;
 
 import org.json.JSONObject;
 
@@ -41,7 +38,7 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
  * EdScreenRecorderPlugin
  */
 public class EdScreenRecorderPlugin implements FlutterPlugin, ActivityAware, MethodCallHandler,
-        HBRecorderListener,PluginRegistry.ActivityResultListener, PluginRegistry.RequestPermissionsResultListener {
+        HBRecorderListener, PluginRegistry.ActivityResultListener, PluginRegistry.RequestPermissionsResultListener {
 
     private FlutterPluginBinding flutterPluginBinding;
     private ActivityPluginBinding activityPluginBinding;
@@ -156,15 +153,21 @@ public class EdScreenRecorderPlugin implements FlutterPlugin, ActivityAware, Met
                         micPermission = true;
                     }
 
-                    if (ContextCompat.checkSelfPermission(flutterPluginBinding.getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                            != PackageManager.PERMISSION_GRANTED) {
 
-                        ActivityCompat.requestPermissions(activity,
-                                new String[]{ Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                444);
-                    } else {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                         mediaPermission = true;
+                    } else {
+                        if (ContextCompat.checkSelfPermission(flutterPluginBinding.getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                != PackageManager.PERMISSION_GRANTED) {
+
+                            ActivityCompat.requestPermissions(activity,
+                                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                    444);
+                        } else {
+                            mediaPermission = true;
+                        }
                     }
+
                     if (micPermission && mediaPermission) {
                         success = startRecordingScreen();
                     }
@@ -327,7 +330,6 @@ public class EdScreenRecorderPlugin implements FlutterPlugin, ActivityAware, Met
     }
 
     private Boolean startRecordingScreen() {
-
         try {
             hbRecorder.enableCustomSettings();
             MediaProjectionManager mediaProjectionManager = (MediaProjectionManager) flutterPluginBinding
