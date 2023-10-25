@@ -1,3 +1,5 @@
+## Sakeshioyaki
+fix permission to record in android 13 &&  width, height of device
 
 # ED Flutter Screen Recorder
 
