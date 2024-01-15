@@ -20,7 +20,7 @@ android/app/src/main/AndroidManifest.xml
 ```xml
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="32" tools:ignore="ScopedStorage" /> 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" android:maxSdkVersion="32" tools:ignore="ScopedStorage" /> 
+<!--    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" android:maxSdkVersion="32" tools:ignore="ScopedStorage" /> -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" /> 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 ```
